@@ -80,9 +80,19 @@ class _State extends State<StayFitApp> {
                         child: Text("CONTINUE"),
                         color: Colors.blue,
                         onPressed: () {
-                          if (_formKey.currentState.validate()) {}
-                          Signup(nameController.text, emailController.text,
-                              passwordController.text);
+                          if (_formKey.currentState.validate()) {
+                            
+                            Signup(nameController.text, emailController.text,
+                                passwordController.text);
+                            
+                          } else {
+                           showDialog(context: context, builder: (BuildContext context)=>AlertDialog(
+                           content: const Text('Please enter the valid email address'),
+                           actions: [
+                             
+                           ],
+                           ));
+                          }
                         },
                       ),
                     ],
