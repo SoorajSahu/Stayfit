@@ -81,6 +81,19 @@ class _State extends State<StayFitApp> {
                         color: Colors.blue,
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
+                            //  showDialog(
+                            //     barrierDismissible: false,
+                            //     context: context,
+                            //     builder: (BuildContext context) => AlertDialog(
+                            //           content: ,
+                            //           actions: [
+                            //             TextButton(
+                            //               child: const Text('Ok'),
+                            //               onPressed: () =>
+                            //                   {Navigator.pop(context)},
+                            //             ),
+                            //           ],
+                            //         ));
                             Signup(nameController.text, emailController.text,
                                 passwordController.text);
                           } else {
@@ -89,12 +102,12 @@ class _State extends State<StayFitApp> {
                                 context: context,
                                 builder: (BuildContext context) => AlertDialog(
                                       content: const Text(
-                                          'Please enter the valid email address'),
+                                          'Please enter the valid Details'),
                                       actions: [
                                         TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, 'Ok'),
                                           child: const Text('Ok'),
+                                          onPressed: () =>
+                                              {Navigator.pop(context)},
                                         ),
                                       ],
                                     ));
