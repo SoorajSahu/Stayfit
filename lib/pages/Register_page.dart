@@ -1,7 +1,7 @@
 import 'dart:convert';
 import '../sizeconfig.dart';
 import 'package:flutter/material.dart';
-import 'package:Stayfit/pages/All_apps.dart';
+import 'All_apps.dart';
 import 'login_page.dart';
 import '../apilink.dart';
 import 'package:http/http.dart' as http;
@@ -77,23 +77,10 @@ class _State extends State<StayFitApp> {
                       buildpasswordNumberFormField(),
                       SizedBox(height: 30),
                       FlatButton(
-                        child: Text("CONTINUE"),
+                        child: Text("Sign Up"),
                         color: Colors.blue,
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
-                            //  showDialog(
-                            //     barrierDismissible: false,
-                            //     context: context,
-                            //     builder: (BuildContext context) => AlertDialog(
-                            //           content: ,
-                            //           actions: [
-                            //             TextButton(
-                            //               child: const Text('Ok'),
-                            //               onPressed: () =>
-                            //                   {Navigator.pop(context)},
-                            //             ),
-                            //           ],
-                            //         ));
                             Signup(nameController.text, emailController.text,
                                 passwordController.text);
                           } else {
@@ -113,6 +100,31 @@ class _State extends State<StayFitApp> {
                                     ));
                           }
                         },
+                      ),
+                      new Container(
+                        child: new Row(
+                          children: [
+                            Text(
+                              'Do You Have an Account?',
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            FlatButton(
+                              textColor: Colors.blue[800],
+                              child: Text(
+                                'Log In',
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.blue[800]),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (context) => LogIn()));
+                              },
+                              color: Colors.black12,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
