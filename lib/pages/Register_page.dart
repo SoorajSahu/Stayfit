@@ -32,7 +32,9 @@ class _State extends State<StayFitApp> {
         },
         body: json);
     if (response.statusCode.toString() == '201') {
-      print(response.body);
+      Navigator.push(
+          context, new MaterialPageRoute(builder: (context) => LogIn()));
+    } else if (response.statusCode.toString() == '200') {
       Navigator.push(
           context, new MaterialPageRoute(builder: (context) => Allapp()));
     }
@@ -52,7 +54,7 @@ class _State extends State<StayFitApp> {
 
   _body() {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: Text('SIGN UP'), centerTitle: true),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(
@@ -81,19 +83,15 @@ class _State extends State<StayFitApp> {
                         color: Colors.blue,
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
-                            //  showDialog(
-                            //     barrierDismissible: false,
-                            //     context: context,
-                            //     builder: (BuildContext context) => AlertDialog(
-                            //           content: ,
-                            //           actions: [
-                            //             TextButton(
-                            //               child: const Text('Ok'),
-                            //               onPressed: () =>
-                            //                   {Navigator.pop(context)},
-                            //             ),
-                            //           ],
-                            //         ));
+                            showDialog(
+                                barrierDismissible: true,
+                                context: context,
+                                builder: (BuildContext context) => Container(
+                                      alignment: Alignment.center,
+                                      width: 100,
+                                      height: 100,
+                                      child: CircularProgressIndicator(),
+                                    ));
                             Signup(nameController.text, emailController.text,
                                 passwordController.text);
                           } else {
@@ -114,6 +112,25 @@ class _State extends State<StayFitApp> {
                           }
                         },
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Already have account ?'),
+                          TextButton(
+                            child: Text(
+                              "Login.",
+                              style:
+                                  TextStyle(color: Colors.blue, fontSize: 18),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (context) => LogIn()));
+                            },
+                          )
+                        ],
+                      )
                     ],
                   ),
                 ),
@@ -136,12 +153,11 @@ class _State extends State<StayFitApp> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Password",
-        border: OutlineInputBorder(),
-        hintText: "************",
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: Icon(Icons.mail_rounded),
-      ),
+          labelText: "Password",
+          border: OutlineInputBorder(),
+          hintText: "************",
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          suffixIcon: Icon(Icons.password_rounded)),
       obscureText: true,
       validator: (String value) {
         if (value.trim().isEmpty) {
@@ -188,12 +204,11 @@ class _State extends State<StayFitApp> {
         return null;
       },
       decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: "User Name",
-        hintText: "Enter your Name",
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: Icon(Icons.verified_user_rounded),
-      ),
+          border: OutlineInputBorder(),
+          labelText: "User Name",
+          hintText: "Enter your Name",
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          suffixIcon: Icon(Icons.person)),
     );
   }
 }

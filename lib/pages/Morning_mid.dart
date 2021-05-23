@@ -108,8 +108,8 @@ class _Mstate extends State<MorningSound> {
           // new Padding(padding: EdgeInsets.only(top: 100)),
           new Container(
             height: 800,
-            child: new Image.asset(
-              "images/img.jpg",
+            child: new Image.network(
+              "http://cloud.sistec.ac.in/0187cs181021/stayfit/assassins_creed_valhalla_video_game_ragnar_lothbrok-wallpaper-1366x768.jpg",
               fit: BoxFit.fill,
             ),
           ),
