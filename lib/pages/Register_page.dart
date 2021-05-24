@@ -1,7 +1,7 @@
 import 'dart:convert';
 import '../sizeconfig.dart';
 import 'package:flutter/material.dart';
-import 'All_apps.dart';
+import 'package:Stayfit/pages/All_apps.dart';
 import 'login_page.dart';
 import '../apilink.dart';
 import 'package:http/http.dart' as http;
@@ -73,14 +73,15 @@ class _State extends State<StayFitApp> {
 
   _body() {
     return Scaffold(
+      appBar: AppBar(title: Text('SIGN UP'), centerTitle: true),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(
             children: [
               Container(
                 child: Image.asset(
-                  'images/logo2.png',
-                  height: 100,
+                  'images/logo.png',
+                  width: 150,
                 ),
                 alignment: Alignment.center,
               ),
@@ -97,10 +98,19 @@ class _State extends State<StayFitApp> {
                       buildpasswordNumberFormField(),
                       SizedBox(height: 30),
                       FlatButton(
-                        child: Text("Sign Up"),
+                        child: Text("CONTINUE"),
                         color: Colors.blue,
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
+                            showDialog(
+                                barrierDismissible: true,
+                                context: context,
+                                builder: (BuildContext context) => Container(
+                                      alignment: Alignment.center,
+                                      width: 100,
+                                      height: 100,
+                                      child: CircularProgressIndicator(),
+                                    ));
                             Signup(nameController.text, emailController.text,
                                 passwordController.text);
                           } else {
@@ -121,31 +131,25 @@ class _State extends State<StayFitApp> {
                           }
                         },
                       ),
-                      new Container(
-                        child: new Row(
-                          children: [
-                            Text(
-                              'Do You Have an Account?',
-                              style: TextStyle(fontSize: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Already have account ?'),
+                          TextButton(
+                            child: Text(
+                              "Login.",
+                              style:
+                                  TextStyle(color: Colors.blue, fontSize: 18),
                             ),
-                            FlatButton(
-                              textColor: Colors.blue[800],
-                              child: Text(
-                                'Log In',
-                                style: TextStyle(
-                                    fontSize: 15, color: Colors.blue[800]),
-                              ),
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    new MaterialPageRoute(
-                                        builder: (context) => LogIn()));
-                              },
-                              color: Colors.black12,
-                            ),
-                          ],
-                        ),
-                      ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (context) => LogIn()));
+                            },
+                          )
+                        ],
+                      )
                     ],
                   ),
                 ),
