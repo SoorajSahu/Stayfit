@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 // import 'package:timer_count_down/timer_controller.dart';
@@ -9,6 +9,10 @@ class MorningSound extends StatefulWidget {
 }
 
 class _Mstate extends State<MorningSound> {
+  AudioPlayer audioPlayer = new AudioPlayer();
+  Duration duration = new Duration();
+  Duration position = new Duration();
+
   TextEditingController namecontroller = TextEditingController();
 
   Timer timer;
@@ -17,15 +21,17 @@ class _Mstate extends State<MorningSound> {
   IconData playbtn = Icons.play_circle;
 
   Widget slider() {
-    return Slider(
+    return Slider.adaptive(
       activeColor: Colors.black87,
       inactiveColor: Colors.grey,
 
-      value: 1,
+      value: position.inSeconds.toDouble(),
+      max: duration.inSeconds.toDouble(),
       min: 0.0,
       // max: len.inSeconds.toDouble(),
       onChanged: (double value) {
         seekTovalue(value.toInt());
+        // setState(() {});
       },
     );
   }
@@ -47,6 +53,19 @@ class _Mstate extends State<MorningSound> {
     setState(() {
       radiotile = val;
     });
+  }
+
+  PlayAudio() {
+    audioPlayer.play(
+        "http://cloud.sistec.ac.in/0187cs181021/stayfit/Morning_Meditation.mp3");
+  }
+
+  PauseAudio() {
+    audioPlayer.pause();
+  }
+
+  StopAudio() {
+    audioPlayer.stop();
   }
 
   CreateAlertDialoug(BuildContext) {
@@ -167,6 +186,8 @@ class _Mstate extends State<MorningSound> {
                         setState(() {
                           playbtn = Icons.pause_circle;
                           playing = true;
+                          print("play music");
+                          PlayAudio();
                           print(playing);
                         });
                       } else {
@@ -174,6 +195,7 @@ class _Mstate extends State<MorningSound> {
                           print(playing);
                           playbtn = Icons.play_circle;
                           playing = false;
+                          StopAudio();
                           print(playing);
                         });
                       }
@@ -189,3 +211,4 @@ class _Mstate extends State<MorningSound> {
     );
   }
 }
+
