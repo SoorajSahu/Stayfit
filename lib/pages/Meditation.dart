@@ -7,6 +7,96 @@ class MeditationApp extends StatefulWidget {
 }
 
 class _MeditationAppState extends State<MeditationApp> {
+  TextEditingController namecontroller = TextEditingController();
+  int counter;
+
+  //alert dialouge for morning meditation page
+  CreateAlertDialoug(BuildContext) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: new Stack(
+              children: [
+                new TextFormField(
+                  decoration: new InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Enter time in minutes",
+                  ),
+                  controller: namecontroller,
+                  keyboardType: TextInputType.number,
+                ),
+                new Container(),
+                Padding(padding: EdgeInsets.all(20)),
+                new Center(
+                  child: RaisedButton(
+                    onPressed: () {
+                      print(namecontroller.text); // set timer
+                      counter = int.parse(namecontroller.text);
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => MorningSound(counter: counter),
+                      ));
+                    },
+                    child: new Text(
+                      "Submit",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontFamily: 'Oldenburg',
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  //alert dialouge for evening meditation page
+
+  CreateAlertDialoug2(BuildContext) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: new Stack(
+              children: [
+                new TextFormField(
+                  decoration: new InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Enter time in minutes",
+                  ),
+                  controller: namecontroller,
+                  keyboardType: TextInputType.number,
+                ),
+                new Container(),
+                Padding(padding: EdgeInsets.all(20)),
+                new Center(
+                  child: RaisedButton(
+                    onPressed: () {
+                      print(namecontroller.text); // set timer
+                      counter = int.parse(namecontroller.text);
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => EveSound(counter: counter),
+                      ));
+                    },
+                    child: new Text(
+                      "Submit",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontFamily: 'Oldenburg',
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,14 +161,23 @@ class _MeditationAppState extends State<MeditationApp> {
                     buttonPadding: EdgeInsets.all(20),
                     children: [
                       // FlatButton(onPressed: () => {}, child: Text("Play"))
-
-                      IconButton(
+                      new ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) => MorningSound()));
+                          CreateAlertDialoug(BuildContext);
                         },
+                        child: new Text(
+                          "Set Timer",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 15,
+                              fontFamily: 'Oldenburg',
+                              fontWeight: FontWeight.bold),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.white54, elevation: 10),
+                      ),
+                      IconButton(
+                        onPressed: () => {},
                         icon: new Icon(Icons.play_circle_sharp),
                         color: Colors.amberAccent,
                         iconSize: 70,
@@ -115,14 +214,23 @@ class _MeditationAppState extends State<MeditationApp> {
                     buttonPadding: EdgeInsets.all(20),
                     children: [
                       // FlatButton(onPressed: () => {}, child: Text("Play"))
-
-                      IconButton(
+                      new ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) => EveSound()));
+                          CreateAlertDialoug2(BuildContext);
                         },
+                        child: new Text(
+                          "Set Timer",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 15,
+                              fontFamily: 'Oldenburg',
+                              fontWeight: FontWeight.bold),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.white54, elevation: 10),
+                      ),
+                      IconButton(
+                        onPressed: () => {},
                         icon: new Icon(Icons.play_circle_filled_rounded),
                         color: Colors.blueAccent,
                         iconSize: 70,
