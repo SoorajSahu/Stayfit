@@ -31,13 +31,32 @@ class _State extends State<StayFitApp> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: json);
+    print(response.body);
     if (response.statusCode.toString() == '201') {
-      Navigator.push(
-          context, new MaterialPageRoute(builder: (context) => LogIn()));
+      print('User Successfully created.   Please login to Continue.');
+      Popup('User Successfully created.   Please login to Continue.');
     } else if (response.statusCode.toString() == '200') {
-      Navigator.push(
-          context, new MaterialPageRoute(builder: (context) => Allapp()));
+      print('You have already an account. Please login to Continue.');
+      Popup('You have already an account. Please login to Continue.');
     }
+  }
+
+  Popup(String message) {
+    return showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+              content: Text("$message"),
+              actions: [
+                TextButton(
+                  child: const Text('Ok'),
+                  onPressed: () => {
+                    Navigator.push(context,
+                        new MaterialPageRoute(builder: (context) => LogIn()))
+                  },
+                ),
+              ],
+            ));
   }
 
   String validateEmail(String value) {
