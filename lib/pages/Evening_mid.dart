@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class EveSound extends StatefulWidget {
   _Estate createState() => _Estate();
@@ -8,8 +9,22 @@ class EveSound extends StatefulWidget {
 
 class _Estate extends State<EveSound> {
   TextEditingController namecontroller = TextEditingController();
+  AudioPlayer audioPlayer = AudioPlayer();
   bool playing = false;
   IconData playbtn = Icons.play_circle; // main state of play btn
+
+  PlayAudio() {
+    audioPlayer.play(
+        "http://cloud.sistec.ac.in/0187cs181021/stayfit/Deep_Meditation.mp3");
+  }
+
+  PauseAudio() {
+    audioPlayer.pause();
+  }
+
+  StopAudio() {
+    audioPlayer.stop();
+  }
 
   Widget slider() {
     return Slider(
@@ -136,11 +151,13 @@ class _Estate extends State<EveSound> {
                       if (!playing) {
                         setState(() {
                           playbtn = Icons.pause_circle;
+                          PlayAudio();
                           playing = true;
                         });
                       } else {
                         setState(() {
                           playbtn = Icons.play_circle;
+                          StopAudio();
                           playing = false;
                         });
                       }
@@ -156,3 +173,4 @@ class _Estate extends State<EveSound> {
     );
   }
 }
+
