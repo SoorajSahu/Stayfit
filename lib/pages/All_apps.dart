@@ -1,8 +1,7 @@
-// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'Meditation.dart';
+import 'excercise.dart';
 import 'home_page.dart';
-// import 'package:intro/pages/All_apps.dart';
 
 class Allapp extends StatefulWidget {
   @override
@@ -174,156 +173,96 @@ class _AllappState extends State<Allapp> {
             ),
           ),
           Padding(padding: const EdgeInsets.all(10)),
-          GridView.count(
-            crossAxisCount: 2,
-            children: [
-              Padding(padding: const EdgeInsets.all(10)),
-              Container(
-                  // decoration: BoxDecoration(color: Colors.blue),
+          // GridView.count(
+          //   crossAxisCount: 1,
+          //   children: [
+          //     Padding(padding: const EdgeInsets.all(10)),
+          //     Container(
+          //         // decoration: BoxDecoration(color: Colors.blue),
+          //         ),
+          Card(
+            // color: Colors.blue,
+            margin: EdgeInsets.only(top: 150, left: 30, right: 30, bottom: 180),
+            elevation: 8,
+            // margin: EdgeInsets.only(left: 20, right: 20, bottom: 100),
+
+            child: Stack(
+              children: [
+                Center(
+                  child: Image.asset(
+                    "images/men_yoga.jpg",
+                    width: 300,
+                    fit: BoxFit.cover,
                   ),
-              Card(
-                // color: Colors.blue,
-                margin: EdgeInsets.only(top: 20, left: 10),
-                child: Stack(
-                  children: [
-                    Center(
-                      child: Image.asset("images/men_yoga.jpg"),
-                    ),
-                    ButtonBar(
-                      alignment: MainAxisAlignment.center,
-                      // buttonPadding: EdgeInsets.only(top: ),
-
-                      children: [
-                        // FlatButton(onPressed: () => {}, child: Text("Play"))
-
-                        ElevatedButton(
-                          onPressed: () => {},
-                          // child: new Text("Do Meditation"),
-                          child: new Text(
-                            "Do Excersise",
-                            style: TextStyle(
-                                fontFamily: 'Oldenburg',
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          ),
-                          // elevation: 5,
-                          // color: Colors.blue[700],
-                          // highlightElevation: 20,
-                        ),
-                      ],
-                    )
-                  ],
                 ),
-              ),
-              Card(
-                // color: Colors.blue,
-                margin: EdgeInsets.only(top: 20, left: 10),
-
-                child: Stack(
+                ButtonBar(
+                  alignment: MainAxisAlignment.center,
+                  buttonPadding: EdgeInsets.only(top: 20),
                   children: [
-                    Center(
-                      child: Image.asset("images/medi.webp"),
+                    // FlatButton(onPressed: () => {}, child: Text("Play"))
+
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(context,
+                            new MaterialPageRoute(builder: (context) => Ex()));
+                      },
+
+                      // child: new Text("Do Meditation"),
+                      child: new Text(
+                        "Do Excersise",
+                        style: TextStyle(
+                            fontFamily: 'Oldenburg',
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      //elevation: 5,
+                      // color: Colors.blue[700],
+                      // highlightElevation: 20,
                     ),
-                    ButtonBar(
-                      alignment: MainAxisAlignment.center,
-                      // buttonPadding: EdgeInsets.only(top: ),
-
-                      children: [
-                        // FlatButton(onPressed: () => {}, child: Text("Play"))
-
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                new MaterialPageRoute(
-                                    builder: (context) => MeditationApp()));
-                          },
-                          // child: new Text("Do Meditation"),
-                          child: new Text(
-                            "Do Meditation",
-                            style: TextStyle(
-                                fontFamily: 'Oldenburg',
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          ),
-                          // elevation: 5,
-                          // color: Colors.blue[700],
-                          // highlightElevation: 20,
-                        ),
-                      ],
-                    )
                   ],
+                )
+              ],
+            ),
+          ),
+          Card(
+            // color: Colors.blue,
+            margin: EdgeInsets.only(top: 280, left: 30, right: 30, bottom: 20),
+            // margin: EdgeInsets.only(left: 20, right: 20, bottom: 100),
+            elevation: 8,
+            child: Stack(
+              children: [
+                Center(
+                  child: Image.asset("images/medi.webp"),
                 ),
-              ),
-              Card(
-                // color: Colors.blue,
-                margin: EdgeInsets.only(top: 20, left: 10),
-                child: Stack(
+                ButtonBar(
+                  alignment: MainAxisAlignment.center,
+                  buttonPadding: EdgeInsets.only(bottom: 50),
                   children: [
-                    Center(
-                      child: Image.asset("images/diet.jpg"),
+                    // FlatButton(onPressed: () => {}, child: Text("Play"))
+
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (context) => MeditationApp()));
+                      },
+                      // child: new Text("Do Meditation"),
+                      child: new Text(
+                        "Do Meditation",
+                        style: TextStyle(
+                            fontFamily: 'Oldenburg',
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      // elevation: 5,
+                      // color: Colors.blue[700],
+                      // highlightElevation: 20,
                     ),
-                    ButtonBar(
-                      alignment: MainAxisAlignment.center,
-                      // buttonPadding: EdgeInsets.only(top: ),
-
-                      children: [
-                        // FlatButton(onPressed: () => {}, child: Text("Play"))
-
-                        ElevatedButton(
-                          onPressed: () => {},
-                          // child: new Text("Do Meditation"),
-                          child: new Text(
-                            "Count Calories",
-                            style: TextStyle(
-                                fontFamily: 'Oldenburg',
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          ),
-                          // elevation: 5,
-                          // color: Colors.blue[700],
-                          // // highlightElevation: 20,
-                        ),
-                      ],
-                    )
                   ],
-                ),
-              ),
-              Card(
-                // color: Colors.blue,
-                margin: EdgeInsets.only(top: 20, left: 10),
-                child: Stack(
-                  children: [
-                    Center(
-                      child: Image.asset("images/diet_hel.jpg"),
-                    ),
-                    ButtonBar(
-                      alignment: MainAxisAlignment.center,
-                      // buttonPadding: EdgeInsets.only(top: ),
-
-                      children: [
-                        // FlatButton(onPressed: () => {}, child: Text("Play"))
-
-                        ElevatedButton(
-                          onPressed: () => {},
-                          // child: new Text("Do Meditation"),
-                          child: new Text(
-                            "Eat Healthy",
-                            style: TextStyle(
-                                fontFamily: 'Oldenburg',
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          ),
-                          // elevation: 5,
-                          // color: Colors.blue[700],
-                          // // highlightElevation: 20,
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ],
+                )
+              ],
+            ),
           ),
         ],
       ),
