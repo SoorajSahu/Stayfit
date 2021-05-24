@@ -1,17 +1,53 @@
-import 'dart:ui';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 class EveSound extends StatefulWidget {
-  _Estate createState() => _Estate();
+  int counter;
+  EveSound({this.counter});
+  _Estate createState() => _Estate(counter);
 }
 
 class _Estate extends State<EveSound> {
+  int counter;
+  //taking counter value passed by Meditation class
+  _Estate(this.counter);
   TextEditingController namecontroller = TextEditingController();
   AudioPlayer audioPlayer = AudioPlayer();
   bool playing = false;
+  String showtimer = "Be Happy";
   IconData playbtn = Icons.play_circle; // main state of play btn
+
+  void method() {
+    print("counter");
+    counter = counter * 60;
+    starttimer(counter);
+  }
+
+//start timer method
+  void starttimer(int timer) async {
+    const onsec = Duration(seconds: 1);
+    Timer.periodic(onsec, (Timer t) {
+      setState(() {
+        if (timer < 1) {
+          t.cancel();
+          print("time up");
+          StopAudio();
+          setState(() {
+            playbtn = Icons.play_circle;
+            StopAudio();
+            playing = false;
+          });
+        } else {
+          PlayAudio();
+          timer = timer - 1;
+        }
+        showtimer = timer.toString();
+        counter = timer;
+      });
+    });
+  }
 
   PlayAudio() {
     audioPlayer.play(
@@ -24,56 +60,6 @@ class _Estate extends State<EveSound> {
 
   StopAudio() {
     audioPlayer.stop();
-  }
-
-  Widget slider() {
-    return Slider(
-      activeColor: Colors.white,
-      inactiveColor: Colors.grey,
-      value: 1,
-      min: 0.0,
-      onChanged: (double value) {},
-    );
-  }
-
-  CreateAlertDialoug(BuildContext) {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: new Stack(
-              children: [
-                new TextFormField(
-                  decoration: new InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Enter time in minutes",
-                  ),
-                  controller: namecontroller,
-                  keyboardType: TextInputType.number,
-                ),
-                new Container(),
-                Padding(padding: EdgeInsets.all(20)),
-                new Center(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      print(namecontroller.text); // set timer
-                    },
-                    child: new Text(
-                      "Submit",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontFamily: 'Oldenburg',
-                          fontWeight: FontWeight.bold),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                        primary: Colors.white54, elevation: 10),
-                  ),
-                ),
-              ],
-            ),
-          );
-        });
   }
 
   @override
@@ -91,57 +77,45 @@ class _Estate extends State<EveSound> {
       ),
       body: Stack(
         children: [
-          // new Padding(padding: EdgeInsets.only(top: 100)),
           new Container(
             height: 800,
             child: new Image.asset(
               "images/eve_img.jpg",
               fit: BoxFit.cover,
             ),
-            // margin: EdgeInsets.only(top: 100),
           ),
-
           new Container(
             margin: EdgeInsets.only(top: 50),
             alignment: Alignment.topLeft,
             child: new Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                new ElevatedButton(
-                  onPressed: () {
-                    CreateAlertDialoug(BuildContext);
-                  },
-                  child: new Text(
-                    "Set Timer",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontFamily: 'Oldenburg',
-                        fontWeight: FontWeight.bold),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                      primary: Colors.white54, elevation: 10),
-                ),
                 new IconButton(
-                  onPressed: () => {},
+                  onPressed: () {},
                   icon: Icon(Icons.timer),
                   color: Colors.white,
                   iconSize: 70,
                 ),
+                new Container(
+                  child: new Center(
+                      child: Text(
+                    showtimer,
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontFamily: 'Pacifico',
+                      color: Colors.white,
+                    ),
+                  )),
+                )
               ],
             ),
           ),
-
           new Container(
             margin: EdgeInsets.only(top: 350),
             height: 50,
-            // decoration: BoxDecoration(color: Colors.black),
-            child: slider(),
           ),
           new Container(
               alignment: Alignment.bottomCenter,
-              // child: new IconButton(
-              //     onPressed: () => {}, icon: new Icons(Icons.ac_unit)),
               child: new Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -151,14 +125,11 @@ class _Estate extends State<EveSound> {
                       if (!playing) {
                         setState(() {
                           playbtn = Icons.pause_circle;
-                          PlayAudio();
-                          playing = true;
-                        });
-                      } else {
-                        setState(() {
-                          playbtn = Icons.play_circle;
-                          StopAudio();
-                          playing = false;
+                          if (counter > 0) {
+                            //start timer
+                            method();
+                            playing = true;
+                          }
                         });
                       }
                     },
@@ -173,4 +144,3 @@ class _Estate extends State<EveSound> {
     );
   }
 }
-
