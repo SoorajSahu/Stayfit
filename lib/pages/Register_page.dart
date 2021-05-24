@@ -32,7 +32,9 @@ class _State extends State<StayFitApp> {
         },
         body: json);
     if (response.statusCode.toString() == '201') {
-      print(response.body);
+      Navigator.push(
+          context, new MaterialPageRoute(builder: (context) => LogIn()));
+    } else if (response.statusCode.toString() == '200') {
       Navigator.push(
           context, new MaterialPageRoute(builder: (context) => Allapp()));
     }
@@ -52,15 +54,14 @@ class _State extends State<StayFitApp> {
 
   _body() {
     return Scaffold(
-      appBar: AppBar(),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(
             children: [
               Container(
                 child: Image.asset(
-                  'images/logo.png',
-                  width: 150,
+                  'images/logo2.png',
+                  height: 100,
                 ),
                 alignment: Alignment.center,
               ),
@@ -148,12 +149,11 @@ class _State extends State<StayFitApp> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Password",
-        border: OutlineInputBorder(),
-        hintText: "************",
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: Icon(Icons.mail_rounded),
-      ),
+          labelText: "Password",
+          border: OutlineInputBorder(),
+          hintText: "************",
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          suffixIcon: Icon(Icons.password_rounded)),
       obscureText: true,
       validator: (String value) {
         if (value.trim().isEmpty) {
@@ -200,12 +200,11 @@ class _State extends State<StayFitApp> {
         return null;
       },
       decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: "User Name",
-        hintText: "Enter your Name",
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: Icon(Icons.verified_user_rounded),
-      ),
+          border: OutlineInputBorder(),
+          labelText: "User Name",
+          hintText: "Enter your Name",
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          suffixIcon: Icon(Icons.person)),
     );
   }
 }

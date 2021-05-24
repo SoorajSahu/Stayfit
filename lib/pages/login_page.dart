@@ -1,138 +1,180 @@
+import 'dart:convert';
+import '../sizeconfig.dart';
 import 'package:flutter/material.dart';
+import 'package:Stayfit/pages/All_apps.dart';
 import 'Register_page.dart';
-import 'forgot_pass.dart';
+import '../apilink.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_session/flutter_session.dart';
 
 class LogIn extends StatefulWidget {
   @override
-  _LogInState createState() => _LogInState();
+  _State createState() => _State();
 }
 
-class _LogInState extends State<LogIn> {
-  // TextEditingController nameController = TextEditingController();
+class _State extends State<LogIn> {
+  final _formKey = GlobalKey<FormState>();
+  var session = FlutterSession();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(10),
-        // fit: StackFit.expand,
+    return new Scaffold(resizeToAvoidBottomInset: false, body: _body());
+  }
 
-        child: new Stack(
-          children: [
-            new Form(
-              child: new Theme(
-                data: new ThemeData(
-                    // brightness: Brightness.dark,
-                    // primaryColor: Colors.teal,
-                    inputDecorationTheme: new InputDecorationTheme(
-                  labelStyle:
-                      new TextStyle(color: Colors.blue[800], fontSize: 15),
-                )),
-                child: new Column(
-                  children: [
-                    new Center(
-                      child: new Column(
-                        children: [
-                          new Center(
-                            child: new Image(
-                              image: new AssetImage("images/logo2.png"),
-                              color: Colors.blue[800],
-                              height: 60.0,
-                            ),
-                          ),
-                          // Padding(padding: const EdgeInsets.only(top: 5.0)),
-                          new Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              // new Padding(padding: const EdgeInsets.only(top: 80.0)),
-                              new Center(
-                                  child: new Text(
-                                "Stay Fit ",
-                                style: TextStyle(
-                                    color: Colors.blue[800],
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 15,
-                                    fontFamily: 'Pacifico'),
-                              )),
-                            ],
-                          ),
-                          Padding(padding: const EdgeInsets.all(10.0)),
-                          //
-                          // Padding(padding: const EdgeInsets.all(10.0)),
-                          new TextFormField(
-                            decoration: new InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: "Enter Email Address",
-                            ),
-                            controller: emailController,
-                            keyboardType: TextInputType.emailAddress,
-                          ),
-                          Padding(padding: const EdgeInsets.all(10.0)),
-                          new TextFormField(
-                            decoration: new InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: "Enter Password",
-                            ),
-                            keyboardType: TextInputType.text,
-                            obscureText: true,
-                            controller: passwordController,
-                          ),
+  Signin(String email, String pass) async {
+    var json =
+        jsonEncode(<String, String>{"username": email, "password": pass});
+    final response = await http.post(
+        Uri.https(ApiLink().getBaseLink(), ApiLink().getSignInLink()),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json);
+    var jsondata = jsonDecode(response.body);
+    if (response.statusCode.toString() == '200') {
+   
+      session.set('token', jsondata['token'].toString());
+      Navigator.push(
+          context, new MaterialPageRoute(builder: (context) => Allapp()));
+    } else if (response.statusCode.toString() == '401') {
+      Popup('Please Enter Valid Username Password');
+    }
+  }
 
-                          Padding(padding: const EdgeInsets.all(5)),
-                          new MaterialButton(
-                            height: 30.0,
-                            minWidth: 120.0,
-                            hoverColor: Colors.black87,
-                            color: Colors.blue[800],
-                            textColor: Colors.white,
-                            child: new Text("Log In"),
-                            onPressed: () {
-                              // print(nameController.text);
-                              print(emailController.text);
-                              
-                              print(passwordController.text);
+  Popup(String message) {
+    return showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+              content: Text("$message"),
+              actions: [
+                TextButton(
+                  child: const Text('Ok'),
+                  onPressed: () => {Navigator.pop(context)},
+                ),
+              ],
+            ));
+  }
 
-                            }, // dont do anything
-                          ),
-                          // Padding(padding: const EdgeInsets.only(top: 2.0)),
-                          new Container(
-                            child: new Row(
-                              children: [
-                                Text(
-                                  'Forgot Password ?',
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                                FlatButton(
-                                  textColor: Colors.blue[800],
-                                  color: Colors.blue[100],
-                                  child: Text(
-                                    'Click Here',
-                                    style: TextStyle(
-                                        fontSize: 15, color: Colors.blue[800]),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        new MaterialPageRoute(
-                                            builder: (context) => Pass()));
-                                  },
-                                  hoverColor: Colors.blue[800],
-                                )
-                              ],
-                              mainAxisAlignment: MainAxisAlignment.center,
-                            ),
-                          ),
-                        ],
+  String validateEmail(String value) {
+    Pattern pattern =
+        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+        r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+        r"{0,253}[a-zA-Z0-9])?)*$";
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value) || value == null)
+      return 'Enter a valid email';
+    else
+      return null;
+  }
+
+  _body() {
+    return Scaffold(
+      appBar: AppBar(title: Text('LOGIN'), centerTitle: true),
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Column(
+            children: [
+              Container(
+                child: Image.asset(
+                  'images/logo.png',
+                  width: 150,
+                ),
+                alignment: Alignment.center,
+              ),
+              Container(
+                padding: EdgeInsets.all(15),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      buildEmailFormField(),
+                      SizedBox(height: 30),
+                      buildpasswordFormField(),
+                      SizedBox(height: 30),
+                      FlatButton(
+                        child: Text("CONTINUE"),
+                        color: Colors.blue,
+                        onPressed: () {
+                          if (_formKey.currentState.validate()) {
+                            Signin(
+                                emailController.text, passwordController.text);
+                          } else {}
+                        },
                       ),
-                    ),
-                  ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Don't have account ?"),
+                          TextButton(
+                            child: Text(
+                              "Sign Up.",
+                              style:
+                                  TextStyle(color: Colors.blue, fontSize: 18),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (context) => StayFitApp()));
+                            },
+                          )
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  TextFormField buildpasswordFormField() {
+    return TextFormField(
+      onSaved: (newValue) => passwordController.text = newValue,
+      keyboardType: TextInputType.visiblePassword,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          passwordController.text = value;
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+          labelText: "Password",
+          border: OutlineInputBorder(),
+          hintText: "Password",
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          suffixIcon: Icon(Icons.password_rounded)),
+      obscureText: true,
+      validator: (String value) {
+        if (value.trim().isEmpty) {
+          return 'Password is required';
+        }
+      },
+    );
+  }
+
+  TextFormField buildEmailFormField() {
+    return TextFormField(
+      onSaved: (newValue) => emailController.text = newValue,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          emailController.text = value;
+        }
+        return null;
+      },
+      validator: validateEmail,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: "Email",
+        hintText: "Enter your Email",
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: Icon(Icons.mail_rounded),
       ),
     );
   }
